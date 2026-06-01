@@ -1,18 +1,11 @@
-# =============================================================
-# .gitignore — Filmoteka projekat
-# =============================================================
 
-# Nikad ne commituj environment varijable (lozinke!)
 .env
 .env.local
 .env.production
 
-# Upload fajlovi korisnika — ne idu na Git
 backend/uploads/
 
-# Docker privremeni fajlovi
 *.log
 
-# OS fajlovi
 .DS_Store
 Thumbs.db
