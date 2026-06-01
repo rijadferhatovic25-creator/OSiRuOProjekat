@@ -1,16 +1,15 @@
 <?php
 session_start();
 require_once 'db.php';
-error_log("LOGIN STARTED");
+
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
 }
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
 
@@ -20,69 +19,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (empty($username) || empty($password)) {
             $error = "All fields are required!";
         } else {
+
             $stmt = $conn->prepare("SELECT id, password, role, status FROM korisnici WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
-            $stmt->store_result();
 
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($user_id, $hashed_password, $role, $status);
-                $stmt->fetch();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
 
-                if ($status === 'banned') {
-                    $error = "Your account has been suspended!";
-                } elseif (password_verify($password, $hashed_password)) {
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['username'] = $username;
-                    $_SESSION['role'] = $role;
-
-                    header("Location: index.php");
-                    exit();
-                } else {
-                    $error = "Incorrect password!";
-                }
-            } else {
+            if (!$user) {
                 $error = "Username does not exist!";
+            } elseif ($user['status'] === 'banned') {
+                $error = "Your account has been suspended!";
+            } elseif (password_verify($password, $user['password'])) {
+
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $username;
+                $_SESSION['role'] = $user['role'];
+
+                header("Location: index.php");
+                exit();
+
+            } else {
+                $error = "Incorrect password!";
             }
         }
 
     } catch (Throwable $e) {
-        error_log("LOGIN ERROR: " . $e->getMessage());
-
-        // Ovo će ti pokazati pravi error u browseru (privremeno za debug)
-        http_response_code(500);
         die("LOGIN ERROR: " . $e->getMessage());
-    }
-}
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
-
-    if (empty($username) || empty($password)) {
-        $error = "All fields are required!";
-    } else {
-        $stmt = $conn->prepare("SELECT id, password, role, status FROM korisnici WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) {
-            $stmt->bind_result($user_id, $hashed_password, $role, $status);
-            $stmt->fetch();
-
-            if ($status === 'banned') {
-                $error = "Your account has been suspended!";
-            } elseif (password_verify($password, $hashed_password)) {
-                $_SESSION['user_id'] = $user_id;
-                $_SESSION['username'] = $username;
-                $_SESSION['role'] = $role;
-                header("Location: index.php");
-                exit();
-            } else {
-                $error = "Incorrect password!";
-            }
-        } else {
-            $error = "Username does not exist!";
-        }
     }
 }
 ?>
