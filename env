@@ -1,0 +1,27 @@
+# =============================================================
+# .env — Filmoteka environment varijable
+# NIKAD ne commituj ovaj fajl na Git!
+# Dodaj .env u .gitignore
+# =============================================================
+
+# ----- MySQL Konfiguracija -----
+# Root lozinka za MySQL kontejner (samo za inicijalizaciju)
+MYSQL_ROOT_PASSWORD=FilmotekaRoot2026!
+
+# Ime baze podataka — mora biti filmoteka_db (tvoj naziv)
+MYSQL_DATABASE=init
+
+# Korisnik kojeg PHP koristi za konekciju
+MYSQL_USER=filmoteka_user
+MYSQL_PASSWORD=FilmotekaPass2026!
+
+# ----- PHP Backend konfiguracija -----
+# DB_HOST mora biti ime MySQL servisa iz docker-compose.yml
+DB_HOST=mysql
+DB_PORT=3306
+DB_USER=filmoteka_user
+DB_PASSWORD=FilmotekaPass2026!
+DB_NAME=init
+
+# ----- Aplikacijske varijable -----
+APP_ENV=production
