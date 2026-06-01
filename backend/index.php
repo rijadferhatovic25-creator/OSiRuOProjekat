@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'session.php';
 require_once 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -21,7 +21,7 @@ if ($user['status'] === 'banned') {
 
 $_SESSION['role'] = $user['role'];
 $_SESSION['username'] = $user['username'];
-$is_admin = ($user['role'] === 'admin') ? 'true' : 'false';
+$is_admin = ($user['role'] === 'admin') ? 1 : 0;
 
 $hero_res = $conn->query("SELECT vrijednost FROM postavke_sistema WHERE kljuc = 'hero_index'");
 $saved_hero_id = 0;
