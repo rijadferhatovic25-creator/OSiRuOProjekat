@@ -6,7 +6,7 @@ if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
 }
-
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
