@@ -1,7 +1,6 @@
 <?php
 ini_set('session.save_path', '/tmp');
 session_start();
-session_start();
 require_once 'db.php';
 
 if (isset($_SESSION['user_id'])) {
