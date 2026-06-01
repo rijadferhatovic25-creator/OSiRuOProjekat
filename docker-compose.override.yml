@@ -1,7 +1,0 @@
-services:
-  backend:
-    build:
-      args:
-        BUILDKIT_PROGRESS: plain
-        BUILDKIT_INLINE_CACHE: "0"
-      cache_from: []
