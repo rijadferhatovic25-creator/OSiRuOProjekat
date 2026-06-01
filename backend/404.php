@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'session.php';
 $target = isset($_SESSION['user_id']) ? "index.php" : "landing.php";
 ?>
 <!DOCTYPE html>
