@@ -57,4 +57,6 @@ if ($conn->connect_error) {
 if (!$conn->set_charset("utf8mb4")) {
     error_log("Greška pri postavljanju charset-a: " . $conn->error);
 }
+
+    error_log("HOST: " . print_r($host, true));
 ?>
