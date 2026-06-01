@@ -53,4 +53,6 @@ EXPOSE 9000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
     CMD php-fpm -t 2>/dev/null || exit 1
 
-CMD ["php-fpm", "-F"]
+EXPOSE 8080
+
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/filmoteka"]

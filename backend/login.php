@@ -10,35 +10,43 @@ if (isset($_SESSION['user_id'])) {
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
 
-    if (empty($username) || empty($password)) {
-        $error = "All fields are required!";
-    } else {
-        $stmt = $conn->prepare("SELECT id, password, role, status FROM korisnici WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
+    try {
 
-        if ($stmt->num_rows > 0) {
-            $stmt->bind_result($user_id, $hashed_password, $role, $status);
-            $stmt->fetch();
+        $username = trim($_POST['username']);
+        $password = $_POST['password'];
 
-            if ($status === 'banned') {
+        if (empty($username) || empty($password)) {
+            $error = "All fields are required!";
+        } else {
+
+            $stmt = $conn->prepare("SELECT id, password, role, status FROM korisnici WHERE username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+
+            if (!$user) {
+                $error = "Username does not exist!";
+            } elseif ($user['status'] === 'banned') {
                 $error = "Your account has been suspended!";
-            } elseif (password_verify($password, $hashed_password)) {
-                $_SESSION['user_id'] = $user_id;
+            } elseif (password_verify($password, $user['password'])) {
+
+                $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $username;
-                $_SESSION['role'] = $role;
+                $_SESSION['role'] = $user['role'];
+
                 header("Location: index.php");
                 exit();
+
             } else {
                 $error = "Incorrect password!";
             }
-        } else {
-            $error = "Username does not exist!";
         }
+
+    } catch (Throwable $e) {
+        die("LOGIN ERROR: " . $e->getMessage());
     }
 }
 ?>
