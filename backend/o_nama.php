@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'session.php';
 $is_logged = isset($_SESSION['user_id']);
 $is_admin = ($is_logged && $_SESSION['role'] === 'admin');
 ?>
