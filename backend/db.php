@@ -17,3 +17,4 @@ $result = $conn->query("SELECT 1");
 if (!$result) {
     die("DB broken: " . $conn->error);
 }
+?>
