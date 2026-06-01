@@ -19,11 +19,11 @@
 // Operator ?: daje defaultnu vrijednost ako varijabla nije postavljena
 // (npr. kada koristiš XAMPP lokalno bez Dockera).
 
-$host = getenv('MYSQLHOST');
-$user = getenv('MYSQLUSER');
-$pass = getenv('MYSQLPASSWORD');
-$db_name = getenv('MYSQLDATABASE');
-$port = intval(getenv('MYSQLPORT') ?: 3306);
+$host = getenv('MYSQLHOST') ?: getenv('DB_HOST');
+$user = getenv('MYSQLUSER') ?: getenv('DB_USER');
+$pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASSWORD');
+$db_name = getenv('MYSQLDATABASE') ?: getenv('DB_NAME');
+$port = intval(getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: 3306);
 
 // Kreiramo mysqli konekciju
 // mysqli konstruktor: (host, user, password, database, port)
