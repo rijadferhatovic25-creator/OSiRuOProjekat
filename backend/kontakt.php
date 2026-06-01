@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'session.php';
 require_once 'db.php';
 
 $is_logged = isset($_SESSION['user_id']);
