@@ -24,6 +24,13 @@ $user = getenv('MYSQLUSER') ?: getenv('DB_USER');
 $pass = getenv('MYSQLPASSWORD') ?: getenv('DB_PASSWORD');
 $db_name = getenv('MYSQLDATABASE') ?: getenv('DB_NAME');
 $port = intval(getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: 3306);
+echo "<pre>";
+echo "HOST: $host\n";
+echo "USER: $user\n";
+echo "DB: $db_name\n";
+echo "PORT: $port\n";
+echo "</pre>";
+exit;
 
 // Kreiramo mysqli konekciju
 // mysqli konstruktor: (host, user, password, database, port)
